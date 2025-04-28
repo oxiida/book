@@ -331,7 +331,6 @@ The plugin system (more like a dependency injection pattern in AiiDA) is good, i
 
 Some desgins are just bad, so ignore them:
 
-- A heavy and too much details CLI, need to replace with a TUI.
-- orm is the thing I always want to avoid, it should be an excuse for not learning SQL (core developers should know SQL, users can use another DSL).
-- workgraph is crap :< it has no design considerations, it has piles of ai-gen code, it duplicate aiida-core engine by copy plumpy codebase (thanks for this shit that push me away from AiiDA)
-- the engine part (plumpy/kiwipy) is just complex and I am not proud to understand that complicity. It is not needed if multithreading is natively supported (thanks python's GIL, f*ck you!).
+- *
+- *
+- ..

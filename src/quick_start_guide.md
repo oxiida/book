@@ -11,16 +11,24 @@ Additionally, every workflow automatically records data processing, enabling bac
 
 For both examples, the workflow can be embeded into the python, julia and lua.
 
-- [Example in Python](#example-in-python)
+- [Example of running workflow in Python](#example-of-running-workflow-in-python)
 - [(TODO) Example in Julia]()
 - [(TODO) Example in Lua]()
 
 Before you start, make sure you have Oxiida installed.
 
-- To simply run workflows with Oxiida, [download the Oxiida binary here]() and place it somewhere in your system’s PATH.
+- To simply run workflows with Oxiida, download the Oxiida binary [**here**](https://sourceforge.net/projects/oxiida/files/) and place it somewhere in your system’s PATH.
 - If using Oxiida from Python, Julia, or Lua, install the `oxiida` library for your language of choice.
 
 For detailed installation instructions, see the [installation guide](getting_started/installation.md).
+
+> #### Command‑Line Notation
+> 
+> In this guide, lines that you **should type** in a terminal start with `$`.
+> You don’t need to type the `$` character itself; it’s the prompt.
+> Lines that don’t start with `$` show the _output_ of the previous command.
+> PowerShell‑specific examples use `>` rather than `$`.
+
 
 ## Perform an arithmetic operation
 
@@ -40,8 +48,8 @@ print x;
 
 You run it through the oxiida binary
 
-```sh
-oxiida run --storage file arithmetic.ox
+```console
+$ oxiida run --storage file arithmetic.ox
 ```
 
 You then get the result of `-12.5` and a file `provenance_dump.csv` file for how data nodes connected with operations.
@@ -49,8 +57,7 @@ You then get the result of `-12.5` and a file `provenance_dump.csv` file for how
 `--storage file` is to tell Oxiida to write the data flow into a file (by default named `provenance_dump.csv`) in the same directory you running the command.
 If the option not provided, the information will be dumpped to stdout.
 
-> [!NOTE]
-> Persistence the data flow to csv file is only for prototype demostration purpose. 
+> NOTE: Persistence the data flow to csv file is only for prototype demostration purpose. 
 > It is mainly to show I can easily implement a persistence approach and have a multiple writer without using mutex because the actor pattern is used here.
 > The planned feature is to support SQLite as default data storage backend.
 
@@ -61,14 +68,14 @@ Moreover, two pipeline are independent and may tasks a bit longer to finish but 
 
 The example shell piple is like this 
 
-```sh
-echo -e apple\nbanana\napple\norange\nbanana\napple | sort | uniq -c | sort -nr 
-echo \n
-sleep 2
+```console
+$ echo -e apple\nbanana\napple\norange\nbanana\napple | sort | uniq -c | sort -nr 
+$ echo \n
+$ sleep 2
 
-echo -e rust\npython\njulia\nrust\nrust\njulia\nlua\nlua | sort | uniq -c | sort -nr 
-echo \n
-sleep 2
+$ echo -e rust\npython\njulia\nrust\nrust\njulia\nlua\nlua | sort | uniq -c | sort -nr 
+$ echo \n
+$ sleep 2
 ```
 
 you wait for 4 seconds and you see the output
@@ -77,7 +84,6 @@ you wait for 4 seconds and you see the output
       3 apple
       2 banana
       1 orange
-
 
       3 rust
       2 lua
@@ -110,8 +116,8 @@ para {
 
 Save it in the `para_pipe_shell.ox` and run it with
 
-```sh
-oxiida run para_pipe_shell.ox
+```console
+$ oxiida run para_pipe_shell.ox
 ```
 
 You get the same output, but depend on which `seq` (for sequence) block finish first you may get results of the language ranking before the fruit ranking.
@@ -144,11 +150,19 @@ if (out.stdout == "good day") {
 }
 ```
 
-## Example in Python
+## Example of running workflow in Python
 
-Similar as using the arithmetic example as showed above, now I need to run a function (let's say I want to do high school match with `math.sin(x)`, and a customize function to compute some nonsense stuff).
+Oxiida is published in pypi, install it by 
+
+```console
+$ pip install oxiida
+```
+
+Similar as using the arithmetic, now I need to run a function (let's say I want to do high school match with `math.sin(x)`, and a customize function to compute some nonsense stuff).
 And this function is defineded or imported in python.
 I can run it from Oxiida and also surpass the GIL!
+
+Create a python script `wf.py` with following text.
 
 ```python
 import oxiida
@@ -183,6 +197,12 @@ para {
 
 if __name__ == '__main__':
     oxiida.run(workflow)
+```
+
+Then run it by 
+
+```console
+$ python wf.py
 ```
 
 The powerfulness of running python function within Oxiida is you are not limited by the python GIL anymore.
