@@ -160,7 +160,7 @@ $ pip install oxiida
 
 Similar as using the arithmetic, now I need to run a function (let's say I want to do high school match with `math.sin(x)`, and a customize function to compute some nonsense stuff).
 And this function is defineded or imported in python.
-I can run it from Oxiida and also surpass the GIL!
+I can run it from Oxiida with multithreading support.
 
 Create a python script `wf.py` with following text.
 
@@ -172,7 +172,7 @@ from time import sleep, time
 def super_complex_operation(x: float, y: float, z: float) -> float:
     intermediate1 = math.sin(x) * math.log1p(abs(y))
     intermediate2 = math.exp(-z) + x ** 2
-    # Sleep 2 sec to demostrat two of them can run concurrently without GIL limitation
+    # Sleep 2 sec to demostrat two of them can run concurrently without writing multithreading control code.
     sleep(2);
     result = (intermediate1 + intermediate2) / (1 + abs(z - y))
     print("time:", time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -205,6 +205,8 @@ Then run it by
 $ python wf.py
 ```
 
-The powerfulness of running python function within Oxiida is you are not limited by the python GIL anymore.
-Using `para` block syntax allow to call both functions to run concurrently in separate threadings.
+The powerfulness of running python function within Oxiida is you do not need to write multithreading code or async code that need to bridge with synchronous python code.
+Using `para` block syntax allow to call both functions to run concurrently in separate threadings (althrough the heavy CPU load tasks are still dragged by the GIL).
+
+Once the Python remove GIL limit, the Oxiida will levarage the no-gil CPython and automatically get full power.
 

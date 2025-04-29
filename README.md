@@ -1,4 +1,4 @@
-# The Rust Programming Language
+# The Oxiida Workflow Language
 
 ![Build Status](https://github.com/oxiida/book/workflows/CI/badge.svg)
 
