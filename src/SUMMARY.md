@@ -28,7 +28,7 @@
     - [Run in python script](pyembed/000_run_in_python_script.md)
     - [Call Python function](pyembed/001_call_python_function.md)
     - [Data Types](pyembed/002_data_types.md)
-    - [Oh! Multi-threading!](pyembed/003_multi_threading.md)
+    - [Oh! Parallelism!](pyembed/003_parallelism.md)
 - [Embed in Julia]()
 - [Embed in Lua]()
 - [For developers](for_developers/index.md)
