@@ -1,6 +1,6 @@
 # Summary
 
-- [Oxiida](README.md)
+- [Overview](README.md)
 - [Quick start guide](quick_start_guide.md)
 - [Cheatsheet](cheatsheet.md)
 
@@ -17,7 +17,8 @@
     - [Builtin tasks](tutorial/006_builtin_tasks.md)
     - [Parallel Tasks Execution](tutorial/007_parallel_execution.md)
     - [Error handling](tutorial/008_error_handling.md)
-    - [Proverance Introspect](tutorial/009_provenanc_introspect.md)
+    - [Data Persistence](tutorial/009_data_persistence.md)
+    - [Proverance Introspect](tutorial/010_provenanc_introspect.md)
 - [Command Line Tool](cli/README.md)
     - [run](cli/001_run.md)
     - [daemon](cli/002_daemon.md)
