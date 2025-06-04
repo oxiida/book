@@ -46,10 +46,11 @@ In the prototype phase, nice to show powerfulness of new self-baked syntax and r
 - [x] Default config folder using `.config/oxiida/` and support profile switch by switch config. Should also manage proper persistence target of persistence between run and submit to daemon.
 - [ ] query db and provide a lame version of graph print.
 - [ ] (*) the ffi call from python should able to return value in python, the workflow can return result as a expression.
-- [ ] (*) traverse ast and spot parsing time error as much as possible.
+- [x] (*) traverse ast and spot parsing time error as much as possible.
 - [ ] (*) statement should return value of last expression, para block should return an array with lexical order.
 - [ ] ~~`para while`~~ (error-prone, thus disallowed) and `para for` syntax. (check https://docs.julialang.org/en/v1/manual/multi-threading/#The-@threads-Macro)
 - [ ] (*) snapshot of a syntax tree and serialize details to restore. (this requires to change from recursive interpretor to flat loop interpretor, a big refactoring)
+- [ ] `break` and `continue` keywords.
 - [ ] graceful cancellation with [termination signals](https://www.gnu.org/software/libc/manual/html_node/Termination-Signals.html), use SIGTERM
 - [ ] static and strict data type.
 - [ ] type checking for the ffi function declaration.
@@ -69,7 +70,6 @@ After prototype, incrementally add more nice to have proper language things:
 - [ ] when using =_= syntax, provide way to control upbound number for the available processes.
 - [ ] FFI call from julia/lua
 - [ ] traverse the ast and generate the control flow graph. 
-- [ ] `break` and `continue` keywords.
 - [ ] let's build a REPL, oxiida its a interpret language.
 - [ ] ?? `local` keyword for variable shadowing.
 - [ ] performance: expressions in array can be evaluated concurrently.
