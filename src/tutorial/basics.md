@@ -2,17 +2,15 @@
 
 ## Overview
 
-TBA
-
-This tutorial only covers the most important language features, briefly discusses libraries, and at the end will direct you to reference material and resources on the other components.
+This tutorial covers only the most important language features, briefly discusses libraries, and at the end will direct you to reference material and resources on the other components.
 
 ## What will you learn?
 
-TBA
+How to use basic syntax to write a oxiida program and run it.
 
 ## How to run the examples?
 
-TBA
+Copy the code and store in the file, you can then execute it with `oxiida run <filename>`.
 
 ## Hello, world!
 
@@ -23,7 +21,7 @@ prints the text `Hello, world!` to the screen, so we’ll do the same here!
 > no specific demands about your editing or tooling or where your code lives, so
 > if you prefer to use an integrated development environment (IDE) instead of
 > the command line, feel free to use your favorite IDE. Unfortunatly I don't have 
-> time to implement LSP for Oxiida. It is planned and will be one available after 
+> time to implement LSP for Oxiida. It is planned and might be only available after 
 > basic language primitive constructs are fixed.
 
 ### Creating a Project Directory
@@ -91,20 +89,81 @@ Third, the statement end the line with a semicolon (`;`), which indicates that t
 expression is over and the next one is ready to begin. Most lines of Oxiida code
 end with a semicolon.
 
-## Data types
+## Basic syntax and semantic
 
-TBA
+In this language, the semicolon (`;`) serves as a statement terminator, marking the end of an expression when it is used as a statement.
 
-## Control flows
+### Variables and scopes
 
-Blocks introduced by `for` and `if`..`else` use braces `{ ... }`. 
-A brace block **always starts a new local scope**, so any variable you assign inside it becomes a fresh local binding even when a variable with the same name already exists outside. 
+Variables types are inferred if possible otherwise it result in a compiler error.
 
-A typical if..else block looks like this,
+```c
+x = 5; // Ok!
+```
 
-```oxi
-x = 11;
+The assignment and declaration are not distinguished, the first time the variable assigned in the scope, it get declared.
 
+### Comments
+
+We use c-style notation `//` to start comments.
+
+### Types annotations
+
+In the assignment statement, the type annotation is optional.
+
+```c
+x: Int = 4; // hardcoded precision i64
+x = 4; // ok
+y: Float = 4.0; // hardcoded precision f64 
+y = 4.0; // ok
+y: String = "hello world"; // Stored as a rust String.
+y = "hello world"; // ok
+```
+
+### Function and closure
+
+Functions allows to reuse and encapsulate code
+
+```c
+function foo(a: Int) -> Int {
+  x: Int = ... 
+  return x
+}
+```
+
+Functions in this language may be defined recursively, as illustrated by the Fibonacci function below.
+
+```c
+function fibonacci(n: Int) -> Int {
+    if (n == 0) {return 0;}
+    if (n == 1) {return 1;}
+    
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+```
+
+Since we do not have mutable values, any scope can return values to communicate values back to the outer scope
+
+```c
+// (not yet supported)
+y = 5
+x: Int = function foo() {
+  z = 5 + y // y passed by value
+  return z // passed by value
+}
+```
+
+TODO: Syntax not clear yet, since we imitate most likely python for for- and while-loops we should imitate the anonymous functions as well so the variable scopes are intuitively clear.
+
+### Control flow
+
+#### `if..else` branch
+
+The condition is inside in the bracket.
+The branch block is delimited by the `{}`.
+The `if` can immediately follows `else` for multiple branches.
+
+```c
 if (x > 10) {
     x = x + 1;
     y = 0;
@@ -119,55 +178,99 @@ if (x > 10) {
     print "else branch";
     print x;
 }
-
-// error, y not defined. different from python/julia
-// print y;
-// x is the outter scope x
-print x;  // output: 11.0
 ```
 
-An example for loop like this,
+#### `for`/`while` loop
 
-```oxi
+See Jason RFC. Needed for sequential repeated actions.
+
+What is important is that `while`/`for` loop does not start a new scope inside the block. 
+This behavior align with Python and result the following output:
+
+```c
+x = 0;
+while(x < 10) {
+  x = x+1; 
+}
+
+print x;  // 10
+```
+
+Same for the `for` loop.
+
+```c
 x = 0;
 for x in [1, 2, 3, 4] {
-    print x + 1;
-    y = x + 1;
-    print y;
-}
-
-print "-------";
-print x; // output: 0.0
-// y is not defined in the outer scope.
-// print y;
-```
-
-A `while` loop, by contrast, is closed with the keyword end and does not create a new scope. 
-This lets you declare the loop variable before the loop, update it inside the loop body, and keep using it afterward.
-
-The `while` loop looks like this,
-
-```oxi
-x = 0;
-
-while (x < 10) {
     x = x + 1;
-    print x;
 }
 
-print "----";
-print x;  // print 10.0
+print x; // 5
 ```
 
-The language has no separate declaration keywords like `let` or `var`.
-A simple assignment both declares and assigns if the variable was not found in the scope. 
+#### structured concurrency
 
-With this scheme, a `for` loop behaves like Julia (the loop variable is local), whereas a `while` loop behaves like Python (the variable remains shared). 
-The result is a minimal grammar that makes scope boundaries visually obvious and mutation rules predictable.
+- map, try_map, race, try_race
 
-## Function and workflow
+```
+arr: Array = range(5)
+struc_prefix: String = "metal_"
+file: Array[Path, *] = map(arr, |struct_id| { // green threads spawned for each element in the arr (up to a limit)
+  // struc_prefix is copied into this scope 
+  run("python -c 'import utils; utils.create_structure({struc_prefix}{struct_id})'", path_new_from_cwd())
+  return Path("{struc_prefix}{struct_id}.xyz")
+})
+```
+I used Rust syntax, but whatever is simplest to write works.
+In principle we could similarly implement filter and reduce functions.
 
-TBA
+
+## Example
+
+Here is an example that uses basic syntax to represent a real world use case:
+
+```c
+use <std>;
+
+// dataclass definition
+dataclass MolStructure {
+    name: String,
+    positions: [[Float; 3]; *],
+    kinds: [String; *], 
+}
+
+// define a function and customized constructor for CO
+function CO(
+    c_pos: [Float; 3], 
+    o_pos: [Float; 3],
+) -> MolStructure {
+    mol = MolStructure("C monoxide", [c_pos, o_pos], ["C", "O"]);
+    return mol;
+}
+
+// Example CO molecule
+co_molecule = CO(
+    [0.0000, 0.0000, 0.0000],  // Carbon at origin
+    [1.1282, 0.0000, 0.0000],   // Oxygen along x-axis)
+);
+
+// Loop through atoms and print them
+for idx in [0, 1] {
+    idx_str = std::make_string_from_int(idx);
+    print "Atom " .. idx_str .. ": kind=" .. co_molecule.kinds[idx] 
+          .. ", position=" .. co_molecule.positions[idx];
+}
+
+// Extra: for loop over kinds
+for kind in co_molecule.kinds {
+    if (kind == "C") {
+        print "Carbon atom! — I can do some quantum chemistry!";
+    } else {
+        print "A" .. kind .. " atom — check electronegativity?";
+    }
+}
+// a tuple can mix of types
+t: &(String, Float) = &("t1", 6.7);
+```
 
 ## shell pipeline
 
