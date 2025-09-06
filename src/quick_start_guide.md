@@ -20,7 +20,7 @@ Before you start, make sure you have Oxiida installed.
 - To simply run workflows with Oxiida, download the Oxiida binary [**here**](https://sourceforge.net/projects/oxiida/files/) and place it somewhere in your system’s PATH.
 - If using Oxiida from Python, Julia, or Lua, install the `oxiida` library for your language of choice.
 
-For detailed installation instructions, see the [installation guide](getting_started/installation.md).
+For detailed installation instructions, see the [installation guide](tutorial/installation.md).
 
 > #### Command‑Line Notation
 > 
@@ -34,13 +34,13 @@ For detailed installation instructions, see the [installation guide](getting_sta
 
 Suppose you want to perform an arithmetic expression evaluation, with the requirement you want to record the full data flow for future provenance.
 
-```
+```c
 (6 + 4) * -5 / 2^2
 ```
 
 In oxiida you do exactly the same, writing following code to a file, named it `arithmetic.ox` (or name what every you like, it is just a text file).
 
-```oxiida
+```c
 x = (6 + 4) * -5 / 2^2;
 
 print x;
@@ -49,17 +49,8 @@ print x;
 You run it through the oxiida binary
 
 ```console
-$ oxiida run --storage file arithmetic.ox
+$ oxiida run arithmetic.ox
 ```
-
-You then get the result of `-12.5` and a file `provenance_dump.csv` file for how data nodes connected with operations.
-
-`--storage file` is to tell Oxiida to write the data flow into a file (by default named `provenance_dump.csv`) in the same directory you running the command.
-If the option not provided, the information will be dumpped to stdout.
-
-> NOTE: Persistence the data flow to csv file is only for prototype demostration purpose. 
-> It is mainly to show I can easily implement a persistence approach and have a multiple writer without using mutex because the actor pattern is used here.
-> The planned feature is to support SQLite as default data storage backend.
 
 ## Perform a pipeline of shell tasks
 
@@ -80,7 +71,7 @@ $ sleep 2
 
 you wait for 4 seconds and you see the output
 
-```
+```text
       3 apple
       2 banana
       1 orange
@@ -93,7 +84,7 @@ you wait for 4 seconds and you see the output
 
 Let's save 2 seconds of your life with some records of what you are doing
 
-```oxiida
+```c
 para {
     seq {
         out = shellpipe { 
@@ -129,7 +120,7 @@ The loop control flow has `while` and `for` syntax support and the regular `if`.
 
 Here is an made up shell call tasks that use all of them.
 
-```
+```c
 out = shellpipe {"shuf" "-n1" "-e" "good day" "bad day" "soso day" | "tr" "-d" "'\n'"};
 print out.stdout;
 if (out.stdout == "good day") {

@@ -1,6 +1,4 @@
-# Installation
-
-Before you start, make sure you have **Oxiida** installed.
+# Install Oxiida
 
 ## Pre-compiled binaries
 

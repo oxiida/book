@@ -38,28 +38,43 @@ In the prototype phase, nice to show powerfulness of new self-baked syntax and r
 - [x] design doc for the syntax specifications, through a mdbook (https://github.com/oxiida/book).
 - [x] FFI through pyo3 to embed oxiida-lang into python script.
 - [x] (*) workflow reuse 
+- [x] (*) static and strong type system.
+- [ ] (*) customized type
 - [ ] (*) module import. 
-- [ ] Clear scope and variable management (plan to use var stack)
+- [ ] (*) stdlib with dsl functionalities.
+- [ ] (*) Interfaces for wfdev for tasks and workflow build. 
+- [x] Clear scope and variable management (plan to use var stack)
 - [x] Performance, workaround GIL with multiprocessing.
 - [x] versatile runtime that listen to the tasks and launch them.
 - [x] sqlite as default persistence
 - [x] Default config folder using `.config/oxiida/` and support profile switch by switch config. Should also manage proper persistence target of persistence between run and submit to daemon.
 - [ ] query db and provide a lame version of graph print.
 - [ ] (*) the ffi call from python should able to return value in python, the workflow can return result as a expression.
-- [ ] (*) traverse ast and spot parsing time error as much as possible.
+- [x] (*) traverse ast and spot parsing time error as much as possible.
 - [ ] (*) statement should return value of last expression, para block should return an array with lexical order.
 - [ ] ~~`para while`~~ (error-prone, thus disallowed) and `para for` syntax. (check https://docs.julialang.org/en/v1/manual/multi-threading/#The-@threads-Macro)
 - [ ] (*) snapshot of a syntax tree and serialize details to restore. (this requires to change from recursive interpretor to flat loop interpretor, a big refactoring)
 - [ ] graceful cancellation with [termination signals](https://www.gnu.org/software/libc/manual/html_node/Termination-Signals.html), use SIGTERM
-- [ ] static and strict data type.
 - [ ] type checking for the ffi function declaration.
 - [ ] separate the bin and lib parts into independent crates.
-- [ ] pre-runtime type check for array and variable assignment.
+- [x] pre-runtime type check for array and variable assignment.
 - [ ] tracing for crutial flow nodes.
 - [ ] (*) Support container tasks
 - [ ] Support ssh tasks
 - [ ] Support container tasks over ssh wire.
 - [ ] chores: TODO/XXX
+- [ ] make every example test one specific type of feature.
+
+Small tasks collect around the prototype tasks above.
+
+- [x] distinguish integer and float.
+- [ ] bool shall be explicitly casting with stdlib.
+- [ ] remove dict and replace it with customized composit type.
+- [ ] reinvstigate wether I need incline variable for attr access.
+- [ ] Type as a `TypExpression` not to mix with `Expression` in tree walking.
+- [ ] `for` loop julia behavior
+- [ ] type error can collect and show in one time
+- [x] `workflow` has same behavior as `function` and fix function examples.
 
 After prototype, incrementally add more nice to have proper language things:
 
@@ -83,7 +98,7 @@ After prototype, incrementally add more nice to have proper language things:
 - [ ] For python binding, clean the dependencies that can be implemented by my own. list are
     - `serde-pythobject` for convert pyAny back and forth.
     - `serde_json`, because should not bind to json as serializable format.
-- Considered native win support. Now I use `nix` which is a issue for the moment for win support, but should consider to support it as a DSL.
+- [ ] Considered native win support. Now I use `nix` which is a issue for the moment for win support, but should consider to support it as a DSL.
 
 Now I can public the repo and release 0.1.0 to crates.io
 
