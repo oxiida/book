@@ -4,6 +4,10 @@
 
 This repository contains the source of "The Oxiida Workflow Language" book.
 
+## Fully design notes
+
+[design notes](https://typst.app/project/rTtfzblTV0fqraTWX8a3ao)
+
 ## Requirements
 
 Building the book requires [mdBook], ideally the same version that
